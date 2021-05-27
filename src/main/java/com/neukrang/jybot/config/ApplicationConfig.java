@@ -36,6 +36,7 @@ public class ApplicationConfig {
     }
 
     public JDA setJdaListeners(JDA jda) {
+        jda.addEventListener(context.getBean("commandListener"));
         jda.addEventListener(context.getBean("readyListener"));
         jda.addEventListener(context.getBean("debugListener"));
         jda.addEventListener(context.getBean("musicListener"));

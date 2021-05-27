@@ -2,19 +2,22 @@ package com.neukrang.jybot.command;
 
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Component
 public class CommandMapper implements ICommand {
 
+    private final ApplicationContext applicationContext;
     private final Map<String, ICommand> commandMap;
 
-    public CommandMapper() {
+    public CommandMapper(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
         commandMap = new HashMap<>();
+        loadCommands();
     }
 
     @Override
@@ -49,10 +52,22 @@ public class CommandMapper implements ICommand {
         return content.split(" ")[0].replaceFirst("!", "");
     }
 
+    private void loadCommands() {
+        List<String> beanNameList = new ArrayList<>(Arrays.asList(
+                "joinCommand", "outCommand", "playCommand", "testCommand"
+        ));
+        for (String name : beanNameList) {
+            add(getCommand(name));
+        }
+    }
+
     private void add(ICommand command) {
         String name = command.getName();
         if (commandMap.containsKey(name)) return;
-
         commandMap.put(name, command);
+    }
+
+    private ICommand getCommand(String beanName) {
+        return applicationContext.getBean(beanName, ICommand.class);
     }
 }

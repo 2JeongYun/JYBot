@@ -4,8 +4,10 @@ import com.neukrang.jybot.command.CommandMapper;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
+@Component
 public class CommandListener extends ListenerAdapter {
 
     private final CommandMapper commandMapper;

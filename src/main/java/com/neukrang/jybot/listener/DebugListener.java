@@ -1,6 +1,7 @@
 package com.neukrang.jybot.listener;
 
 import lombok.RequiredArgsConstructor;
+import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -9,13 +10,11 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class TestListener extends ListenerAdapter {
+public class DebugListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        if (event.getAuthor().isBot()) {
-            return;
-        }
+        if (event.getAuthor().isBot()) return;
 
         Message message = event.getMessage();
         String content = message.getContentRaw();
@@ -23,6 +22,13 @@ public class TestListener extends ListenerAdapter {
         if (content.equals("!ping")) {
             MessageChannel channel = event.getChannel();
             channel.sendMessage("Pong!").queue();
+        }
+
+        if (event.isFromType(ChannelType.TEXT)) {
+            System.out.printf("[%s][%s][%s] %#s: %s%n", event.getGuild().getName(), event.getGuild().getName(),
+                    event.getChannel().getName(), event.getAuthor(), event.getMessage().getContentDisplay());
+        } else {
+            System.out.printf("[PM] %#s: %s%n", event.getAuthor(), event.getMessage().getContentDisplay());
         }
     }
 }

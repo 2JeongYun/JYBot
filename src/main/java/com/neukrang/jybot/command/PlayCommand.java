@@ -1,6 +1,6 @@
 package com.neukrang.jybot.command;
 
-import com.neukrang.jybot.command.skeleton.ICommand;
+import com.neukrang.jybot.command.skeleton.TargetCommand;
 import com.neukrang.jybot.musicplayer.PlayerManager;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.entities.Guild;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class PlayCommand implements ICommand {
+public class PlayCommand extends TargetCommand {
 
     private final PlayerManager playerManager;
 

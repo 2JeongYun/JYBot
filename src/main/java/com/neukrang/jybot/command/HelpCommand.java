@@ -1,6 +1,6 @@
 package com.neukrang.jybot.command;
 
-import com.neukrang.jybot.command.skeleton.ICommand;
+import com.neukrang.jybot.command.skeleton.Command;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 @Component
-public class HelpCommand implements ICommand {
+public class HelpCommand extends Command {
 
-    private final Map<String, ICommand> commandMap;
+    private final Map<String, Command> commandMap;
 
     public HelpCommand(ApplicationContext context) {
         this.commandMap = context.getBean("commandMap", Map.class);

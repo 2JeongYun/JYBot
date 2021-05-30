@@ -1,6 +1,6 @@
 package com.neukrang.jybot.command;
 
-import com.neukrang.jybot.command.skeleton.ICommand;
+import com.neukrang.jybot.command.skeleton.Command;
 import lombok.Getter;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.springframework.context.ApplicationContext;
@@ -16,7 +16,7 @@ import java.util.Map;
 public class CommandMapper {
 
     private final ApplicationContext context;
-    private final Map<String, ICommand> commandMap;
+    private final Map<String, Command> commandMap;
 
     public CommandMapper(ApplicationContext context) {
         this.context = context;
@@ -26,9 +26,13 @@ public class CommandMapper {
 
     public void handle(GuildMessageReceivedEvent event) {
         String commandName = getCommandName(event);
-        ICommand command = commandMap.get(commandName);
+        Command command = commandMap.get(commandName);
         if (command == null) {
             handleError(event);
+            return;
+        }
+        if (!command.isValidFormat(event)) {
+            command.handleFormatError(event.getChannel());
             return;
         }
         command.handle(event);
@@ -53,13 +57,13 @@ public class CommandMapper {
         }
     }
 
-    private void add(ICommand command) {
+    private void add(Command command) {
         String name = command.getName();
         if (commandMap.containsKey(name)) return;
         commandMap.put(name, command);
     }
 
-    private ICommand getCommand(String beanName) {
-        return context.getBean(beanName, ICommand.class);
+    private Command getCommand(String beanName) {
+        return context.getBean(beanName, Command.class);
     }
 }

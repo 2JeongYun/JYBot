@@ -1,6 +1,6 @@
 package com.neukrang.jybot.config;
 
-import com.neukrang.jybot.command.ICommand;
+import com.neukrang.jybot.command.skeleton.ICommand;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

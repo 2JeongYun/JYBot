@@ -14,12 +14,12 @@ import java.util.Map;
 @Component
 public class CommandMapper {
 
-    private final ApplicationContext applicationContext;
+    private final ApplicationContext context;
     private final Map<String, ICommand> commandMap;
 
-    public CommandMapper(ApplicationContext applicationContext, CommandMap commandMap) {
-        this.applicationContext = applicationContext;
-        this.commandMap = commandMap.getCommandMap();
+    public CommandMapper(ApplicationContext context) {
+        this.context = context;
+        this.commandMap = context.getBean("commandMap", Map.class);
         loadCommands();
     }
 
@@ -60,6 +60,6 @@ public class CommandMapper {
     }
 
     private ICommand getCommand(String beanName) {
-        return applicationContext.getBean(beanName, ICommand.class);
+        return context.getBean(beanName, ICommand.class);
     }
 }

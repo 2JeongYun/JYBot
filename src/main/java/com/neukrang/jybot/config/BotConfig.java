@@ -40,8 +40,7 @@ public class BotConfig {
 
     public JDA setJdaListeners(JDA jda) {
         List<String> beanNames = new ArrayList<>(Arrays.asList(
-                "commandListener", "readyListener", "debugListener",
-                "musicListener"
+                "commandListener", "readyListener", "debugListener"
         ));
 
         for (String name : beanNames) {

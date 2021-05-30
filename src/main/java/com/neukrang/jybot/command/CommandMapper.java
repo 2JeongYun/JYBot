@@ -31,7 +31,6 @@ public class CommandMapper {
             return;
         }
         command.handle(event);
-        System.out.println(commandMap.keySet().toString());
     }
 
     public void handleError(GuildMessageReceivedEvent event) {

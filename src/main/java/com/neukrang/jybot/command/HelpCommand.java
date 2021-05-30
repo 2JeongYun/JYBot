@@ -17,8 +17,6 @@ public class HelpCommand implements ICommand {
 
     @Override
     public void handle(GuildMessageReceivedEvent event) {
-        System.out.println(commandMap.keySet().toString());
-
         String option = getOption(event);
         String retMsg = null;
         if (option == null)

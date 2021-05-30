@@ -19,7 +19,7 @@ import java.util.List;
 @Slf4j
 @Configuration
 @PropertySource("classpath:/application-private.yml")
-public class ApplicationConfig {
+public class BotConfig {
 
     private final ApplicationContext context;
     private final Environment env;

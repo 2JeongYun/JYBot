@@ -11,6 +11,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
 import javax.security.auth.login.LoginException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -26,7 +29,7 @@ public class ApplicationConfig {
         final String token = env.getProperty("app.discord.token");
         JDA jda = null;
         try {
-            jda =  JDABuilder.createDefault(token).build();
+            jda = JDABuilder.createDefault(token).build();
         } catch (LoginException e) {
             log.error("디스코드 연결 실패");
             throw new RuntimeException(e);
@@ -36,10 +39,14 @@ public class ApplicationConfig {
     }
 
     public JDA setJdaListeners(JDA jda) {
-        jda.addEventListener(context.getBean("commandListener"));
-        jda.addEventListener(context.getBean("readyListener"));
-        jda.addEventListener(context.getBean("debugListener"));
-        jda.addEventListener(context.getBean("musicListener"));
+        List<String> beanNames = new ArrayList<>(Arrays.asList(
+                "commandListener", "readyListener", "debugListener",
+                "musicListener"
+        ));
+
+        for (String name : beanNames) {
+            jda.addEventListener(context.getBean(name));
+        }
         log.info("JDA 리스너 추가 완료");
         return jda;
     }

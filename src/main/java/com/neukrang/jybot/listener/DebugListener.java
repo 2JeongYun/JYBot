@@ -16,7 +16,6 @@ public class DebugListener extends ListenerAdapter {
         if (event.getAuthor().isBot()) return;
 
         Message message = event.getMessage();
-        String content = message.getContentRaw();
 
         if (event.isFromType(ChannelType.TEXT)) {
             System.out.printf("[%s][%s] %#s: %s%n", event.getGuild().getName(),

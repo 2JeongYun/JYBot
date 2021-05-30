@@ -20,7 +20,7 @@ public class OutCommand implements ICommand {
 
     @Override
     public String getHelp() {
-        return null;
+        return "봇을 음성채널에서 퇴장시킵니다.";
     }
 
     @Override
@@ -28,7 +28,6 @@ public class OutCommand implements ICommand {
         return "out";
     }
 
-    @Override
     public void handleError(GuildMessageReceivedEvent event) {
         event.getChannel().sendMessage("봇이 음성채널에 접속중이지 않습니다.");
     }

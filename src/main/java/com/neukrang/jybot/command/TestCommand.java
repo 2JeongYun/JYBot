@@ -13,14 +13,11 @@ public class TestCommand implements ICommand {
 
     @Override
     public String getHelp() {
-        return null;
+        return "테스트 명령어";
     }
 
     @Override
     public String getName() {
         return "ping";
     }
-
-    @Override
-    public void handleError(GuildMessageReceivedEvent event) {}
 }

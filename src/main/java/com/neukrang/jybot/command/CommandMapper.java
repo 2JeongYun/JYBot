@@ -1,26 +1,28 @@
 package com.neukrang.jybot.command;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.Getter;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
-@Slf4j
+@Getter
 @Component
-public class CommandMapper implements ICommand {
+public class CommandMapper {
 
     private final ApplicationContext applicationContext;
     private final Map<String, ICommand> commandMap;
 
-    public CommandMapper(ApplicationContext applicationContext) {
+    public CommandMapper(ApplicationContext applicationContext, CommandMap commandMap) {
         this.applicationContext = applicationContext;
-        commandMap = new HashMap<>();
+        this.commandMap = commandMap.getCommandMap();
         loadCommands();
     }
 
-    @Override
     public void handle(GuildMessageReceivedEvent event) {
         String commandName = getCommandName(event);
         ICommand command = commandMap.get(commandName);
@@ -29,20 +31,9 @@ public class CommandMapper implements ICommand {
             return;
         }
         command.handle(event);
+        System.out.println(commandMap.keySet().toString());
     }
 
-    @Override
-    // Fixme: 사용가능한 커맨드들의 도움말 리턴
-    public String getHelp() {
-        return "";
-    }
-
-    @Override
-    public String getName() {
-        return "command";
-    }
-
-    @Override
     public void handleError(GuildMessageReceivedEvent event) {
         event.getChannel().sendMessage("해당되는 명령어가 없습니다. '!help' 를 참조하세요.").queue();
     }
@@ -54,10 +45,11 @@ public class CommandMapper implements ICommand {
 
     private void loadCommands() {
         List<String> beanNameList = new ArrayList<>(Arrays.asList(
-                "joinCommand", "outCommand", "playCommand", "testCommand"
+                "joinCommand", "outCommand", "playCommand", "testCommand",
+                "helpCommand"
         ));
-        for (String name : beanNameList) {
-            add(getCommand(name));
+        for (String beanName : beanNameList) {
+            add(getCommand(beanName));
         }
     }
 

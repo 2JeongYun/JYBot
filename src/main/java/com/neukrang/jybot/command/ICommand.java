@@ -7,5 +7,4 @@ public interface ICommand {
     void handle(GuildMessageReceivedEvent event);
     String getHelp();
     String getName();
-    void handleError(GuildMessageReceivedEvent event);
 }

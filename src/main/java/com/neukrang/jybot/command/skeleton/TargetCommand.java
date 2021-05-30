@@ -4,7 +4,8 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public abstract class TargetCommand extends Command {
 
-    protected boolean isValidFormat(GuildMessageReceivedEvent event) {
+    @Override
+    public boolean isValidFormat(GuildMessageReceivedEvent event) {
         String content = event.getMessage().getContentRaw();
         String[] words = content.split(" ");
 

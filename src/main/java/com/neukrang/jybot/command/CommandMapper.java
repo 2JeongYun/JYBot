@@ -33,8 +33,8 @@ public class CommandMapper {
             handleError(event);
             return;
         }
-        if (!command.isValidFormat(event)) {
-            command.handleFormatError(event.getChannel());
+        if (!formatChecker.isValidFormat(command, event)) {
+            formatChecker.sendFormatErrorMessage(command, event.getChannel());
             return;
         }
         command.handle(event);

@@ -17,10 +17,12 @@ public class CommandMapper {
 
     private final ApplicationContext context;
     private final Map<String, Command> commandMap;
+    private final FormatChecker formatChecker;
 
     public CommandMapper(ApplicationContext context) {
         this.context = context;
         this.commandMap = context.getBean("commandMap", Map.class);
+        this.formatChecker = new FormatChecker(commandMap);
         loadCommands();
     }
 
@@ -31,8 +33,8 @@ public class CommandMapper {
             handleError(event);
             return;
         }
-        if (!command.isValidFormat(event)) {
-            command.handleFormatError(event.getChannel());
+        if (!formatChecker.isValidFormat(command, event)) {
+            formatChecker.sendFormatErrorMessage(command, event.getChannel());
             return;
         }
         command.handle(event);
@@ -53,17 +55,12 @@ public class CommandMapper {
                 "helpCommand"
         ));
         for (String beanName : beanNameList) {
-            add(getCommand(beanName));
+            Command command = context.getBean(beanName, Command.class);
+            String commandName = command.getName();
+
+            if (!commandMap.containsKey(commandName)) {
+                commandMap.put(commandName, command);
+            }
         }
-    }
-
-    private void add(Command command) {
-        String name = command.getName();
-        if (commandMap.containsKey(name)) return;
-        commandMap.put(name, command);
-    }
-
-    private Command getCommand(String beanName) {
-        return context.getBean(beanName, Command.class);
     }
 }

@@ -1,4 +1,4 @@
-package com.neukrang.jybot.command;
+package com.neukrang.jybot.command.skeleton;
 
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 

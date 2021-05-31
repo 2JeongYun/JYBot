@@ -1,5 +1,6 @@
 package com.neukrang.jybot.command;
 
+import com.neukrang.jybot.command.skeleton.SingleCommand;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -8,7 +9,7 @@ import net.dv8tion.jda.api.managers.AudioManager;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JoinCommand implements ICommand {
+public class JoinCommand extends SingleCommand {
 
     @Override
     public void handle(GuildMessageReceivedEvent event) {

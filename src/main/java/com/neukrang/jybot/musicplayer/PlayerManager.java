@@ -62,7 +62,7 @@ public class PlayerManager {
     public void skip(TextChannel channel) {
         final GuildMusicManager musicManager = this.getMusicManager(channel.getGuild());
 
-        musicManager.scheduler.skipCurrentTrack();
+        musicManager.scheduler.nextTrack();
         channel.sendMessage("현재 재생중인 곡을 스킵했습니다.").queue();
     }
 

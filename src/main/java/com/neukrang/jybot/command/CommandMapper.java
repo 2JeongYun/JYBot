@@ -51,7 +51,9 @@ public class CommandMapper {
 
     private void loadCommands() {
         List<String> beanNameList = new ArrayList<>(Arrays.asList(
-                "joinCommand", "outCommand", "playCommand", "testCommand",
+                "joinCommand",
+                "outCommand",
+                "testCommand",
                 "helpCommand"
         ));
         for (String beanName : beanNameList) {

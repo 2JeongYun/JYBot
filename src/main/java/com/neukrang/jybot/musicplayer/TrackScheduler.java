@@ -18,16 +18,50 @@ public class TrackScheduler extends AudioEventAdapter {
         this.queue = new LinkedBlockingQueue<>();
     }
 
+    public void pause() {
+        this.player.setPaused(true);
+    }
+
+    public void unPause() {
+        this.player.setPaused(false);
+    }
+
     public void queue(AudioTrack track) {
-        // 아무것도 재생중이지 않을 때만 넘겨진 트랙 재생
-        // 다른것이 재생중이라면 queue 에 넘겨진 트랙을 추가한다.
-        if (!this.player.startTrack(track, true)) {
+        if (!player.startTrack(track, false))
             this.queue.offer(track);
-        }
     }
 
     public void nextTrack() {
         this.player.startTrack(this.queue.poll(), false);
+    }
+
+    public void skipCurrentTrack() {
+        this.player.startTrack(this.queue.poll(), true);
+    }
+
+    public String getStatusMessage() {
+        StringBuffer sb = new StringBuffer();
+        AudioTrack[] tracks = queue.toArray(new AudioTrack[0]);
+
+        if (player.getPlayingTrack() != null) {
+            sb.append(String.format("-----현재 재생중인 곡: %s-----\n",
+                    player.getPlayingTrack().getInfo().title));
+        }
+
+        if (player.isPaused()) {
+            sb.append("-----일시 정지-----");
+        }
+
+        sb.append("-----뮤직 큐-----\n");
+        if (queue.isEmpty()) {
+            sb.append("큐가 비어있습니다.");
+        } else {
+            for (int i = 0; i < queue.size(); i++) {
+                sb.append(String.format("%d. %s\n", i, tracks[i].getInfo().title));
+            }
+        }
+
+        return sb.toString();
     }
 
     @Override

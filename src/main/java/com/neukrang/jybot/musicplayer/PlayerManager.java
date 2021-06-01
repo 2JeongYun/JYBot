@@ -39,19 +39,41 @@ public class PlayerManager {
         });
     }
 
-    public void loadAndPlay(TextChannel channel, String trackUrl) {
+    public void printStatus(TextChannel channel) {
+        final GuildMusicManager musicManager = this.getMusicManager(channel.getGuild());
+
+        channel.sendMessage(musicManager.scheduler.getStatusMessage()).queue();
+    }
+
+    public void pause(TextChannel channel) {
+        final GuildMusicManager musicManager = this.getMusicManager(channel.getGuild());
+
+        musicManager.scheduler.pause();
+        channel.sendMessage("재생을 멈췄습니다.").queue();
+    }
+
+    public void unPause(TextChannel channel) {
+        final GuildMusicManager musicManager = this.getMusicManager(channel.getGuild());
+
+        musicManager.scheduler.unPause();
+        channel.sendMessage("재생을 재개합니다.").queue();
+    }
+
+    public void skip(TextChannel channel) {
+        final GuildMusicManager musicManager = this.getMusicManager(channel.getGuild());
+
+        musicManager.scheduler.skipCurrentTrack();
+        channel.sendMessage("현재 재생중인 곡을 스킵했습니다.").queue();
+    }
+
+    public void load(TextChannel channel, String trackUrl) {
         final GuildMusicManager musicManager = this.getMusicManager(channel.getGuild());
 
         this.audioPlayerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
                 musicManager.scheduler.queue(track);
-
-                channel.sendMessage("Adding to queue: '")
-                        .append(track.getInfo().title)
-                        .append("' by '")
-                        .append(track.getInfo().author)
-                        .queue();
+                channel.sendMessage("음악이 추가되었습니다.").queue();
             }
 
             @Override
@@ -61,12 +83,12 @@ public class PlayerManager {
 
             @Override
             public void noMatches() {
-
+                channel.sendMessage("리소스를 찾을 수 없습니다.").queue();
             }
 
             @Override
             public void loadFailed(FriendlyException exception) {
-
+                channel.sendMessage("ERROR: 리소스를 로드할 수 없습니다.").queue();
             }
         });
     }

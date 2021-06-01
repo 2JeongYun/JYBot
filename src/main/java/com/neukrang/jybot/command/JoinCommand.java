@@ -1,6 +1,8 @@
 package com.neukrang.jybot.command;
 
 import com.neukrang.jybot.command.skeleton.SingleCommand;
+import com.neukrang.jybot.musicplayer.PlayerManager;
+import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -8,8 +10,11 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.managers.AudioManager;
 import org.springframework.stereotype.Component;
 
+@RequiredArgsConstructor
 @Component
 public class JoinCommand extends SingleCommand {
+
+    private final PlayerManager playerManager;
 
     @Override
     public void handle(GuildMessageReceivedEvent event) {
@@ -23,6 +28,7 @@ public class JoinCommand extends SingleCommand {
         }
 
         AudioManager manager = guild.getAudioManager();
+        manager.setSendingHandler(playerManager.getMusicManager(guild).getSendHandler());
         manager.openAudioConnection(voiceState.getChannel());
     }
 

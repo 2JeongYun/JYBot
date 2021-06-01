@@ -54,7 +54,12 @@ public class CommandMapper {
                 "joinCommand",
                 "outCommand",
                 "testCommand",
-                "helpCommand"
+                "helpCommand",
+                "addCommand",
+                "pauseCommand",
+                "unPauseCommand",
+                "skipCommand",
+                "showCommand"
         ));
         for (String beanName : beanNameList) {
             Command command = context.getBean(beanName, Command.class);

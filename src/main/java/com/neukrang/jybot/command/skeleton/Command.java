@@ -13,5 +13,5 @@ public abstract class Command implements ICommand {
     @Override
     public abstract String getName();
 
-    protected void handleError(GuildMessageReceivedEvent event) {}
+    public void handleError(GuildMessageReceivedEvent event) {}
 }

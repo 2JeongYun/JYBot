@@ -14,7 +14,10 @@ public class AddCommand extends TargetCommand {
 
     @Override
     public void handle(GuildMessageReceivedEvent event) {
-        playerManager.load(event.getChannel(), getTargets(event.getMessage().getContentRaw())[0]);
+        String[] urls = getTargets(event.getMessage().getContentRaw());
+        for (String url : urls) {
+            playerManager.load(event.getChannel(), url);
+        }
     }
 
     @Override

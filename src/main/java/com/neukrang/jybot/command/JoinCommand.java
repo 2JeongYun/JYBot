@@ -43,6 +43,8 @@ public class JoinCommand extends SingleCommand {
     }
 
     public void handleError(GuildMessageReceivedEvent event) {
-        event.getChannel().sendMessage("해당 명령어는 음성채널에 참여하신 뒤 사용 해주세요.").queue();
+        event.getChannel()
+                .sendMessage("해당 명령어는 음성채널에 참여하신 뒤 사용 해주세요.")
+                .queue();
     }
 }

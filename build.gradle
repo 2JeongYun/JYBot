@@ -40,6 +40,10 @@ dependencies {
     testAnnotationProcessor("org.projectlombok:lombok")
 }
 
+test {
+    useJUnitPlatform()
+}
+
 jar {
     manifest {
         attributes 'Main-Class': 'com.neukrang.jybot.Application'

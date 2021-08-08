@@ -1,6 +1,7 @@
 package com.neukrang.jybot.command;
 
 import com.neukrang.jybot.command.skeleton.TargetCommand;
+import com.neukrang.jybot.crawler.YouTubeCrawler;
 import com.neukrang.jybot.musicplayer.PlayerManager;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -11,13 +12,23 @@ import org.springframework.stereotype.Component;
 public class AddCommand extends TargetCommand {
 
     private final PlayerManager playerManager;
+    private final YouTubeCrawler youtubeCrawler;
 
     @Override
     public void handle(GuildMessageReceivedEvent event) {
-        String[] urls = getTargets(event.getMessage().getContentRaw());
-        for (String url : urls) {
-            playerManager.load(event.getChannel(), url);
+        String[] keywords = getTargets(event.getMessage().getContentRaw());
+        for (String keyword : keywords) {
+            if (isUrl(keyword))
+                playerManager.load(event.getChannel(), keyword);
+            else
+                playerManager.load(event.getChannel(), youtubeCrawler.getUrl(keyword).getUrl());
         }
+    }
+
+    private boolean isUrl(String input) {
+        if(input.contains("https://") || input.contains("http://"))
+            return true;
+        return false;
     }
 
     @Override

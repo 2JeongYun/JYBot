@@ -1,12 +1,29 @@
-package com.neukrang.jybot.command;
+package com.neukrang.jybot.command.bot;
 
-import com.neukrang.jybot.command.skeleton.SingleCommand;
+import com.neukrang.jybot.command.skeleton.Category;
+import com.neukrang.jybot.command.skeleton.Command;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 @Component
-public class OutCommand extends SingleCommand {
+public class OutCommand extends Command {
+
+    @PostConstruct
+    @Override
+    protected void init() {
+        commandName = "out";
+        category = Category.BOT;
+
+        helpMessage = "!out\n" + "봇을 음성채널에서 퇴장시킵니다.";
+        constraintList = new ArrayList<>(Arrays.asList(
+                "noTarget"
+        ));
+    }
 
     @Override
     public void handle(GuildMessageReceivedEvent event) {
@@ -17,16 +34,6 @@ public class OutCommand extends SingleCommand {
             return;
         }
         event.getGuild().getAudioManager().closeAudioConnection();
-    }
-
-    @Override
-    public String getHelp() {
-        return "봇을 음성채널에서 퇴장시킵니다.";
-    }
-
-    @Override
-    public String getName() {
-        return "out";
     }
 
     public void handleError(GuildMessageReceivedEvent event) {

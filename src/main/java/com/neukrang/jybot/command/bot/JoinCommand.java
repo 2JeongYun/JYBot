@@ -1,6 +1,7 @@
-package com.neukrang.jybot.command;
+package com.neukrang.jybot.command.bot;
 
-import com.neukrang.jybot.command.skeleton.SingleCommand;
+import com.neukrang.jybot.command.skeleton.Category;
+import com.neukrang.jybot.command.skeleton.Command;
 import com.neukrang.jybot.musicplayer.PlayerManager;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.entities.Guild;
@@ -10,11 +11,28 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.managers.AudioManager;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 @RequiredArgsConstructor
 @Component
-public class JoinCommand extends SingleCommand {
+public class JoinCommand extends Command {
 
     private final PlayerManager playerManager;
+
+    @PostConstruct
+    @Override
+    protected void init() {
+        commandName = "join";
+        category = Category.BOT;
+
+        helpMessage = "!join\n" + "음성채널에 봇을 참가시킵니다.";
+        constraintList = new ArrayList<>(Arrays.asList(
+                "noTarget",
+                "inChannel"
+        ));
+    }
 
     @Override
     public void handle(GuildMessageReceivedEvent event) {
@@ -30,16 +48,6 @@ public class JoinCommand extends SingleCommand {
         AudioManager manager = guild.getAudioManager();
         manager.setSendingHandler(playerManager.getMusicManager(guild).getSendHandler());
         manager.openAudioConnection(voiceState.getChannel());
-    }
-
-    @Override
-    public String getHelp() {
-        return "음성채널에 입장한 뒤 사용하면 봇이 해당 채널에 입장합니다.";
-    }
-
-    @Override
-    public String getName() {
-        return "join";
     }
 
     public void handleError(GuildMessageReceivedEvent event) {

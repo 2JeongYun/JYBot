@@ -32,6 +32,14 @@ import java.util.List;
 @PropertySource("classpath:/application-private.yml")
 public class BotConfig implements ApplicationListener<ContextClosedEvent> {
 
+    private final List<String> listeners = new ArrayList<>(
+            Arrays.asList(
+                    "commandListener",
+                    "readyListener",
+                    "debugListener"
+            )
+    );
+
     private final ApplicationContext context;
     private final Environment env;
 
@@ -41,24 +49,20 @@ public class BotConfig implements ApplicationListener<ContextClosedEvent> {
         JDA jda = null;
         try {
             jda = JDABuilder.createDefault(TOKEN).build();
+            setJdaListeners(jda);
         } catch (LoginException e) {
             log.error("디스코드 연결 실패");
             throw new RuntimeException(e);
         }
 
-        return setJdaListeners(jda);
+        return jda;
     }
 
-    public JDA setJdaListeners(JDA jda) {
-        List<String> beanNames = new ArrayList<>(Arrays.asList(
-                "commandListener", "readyListener", "debugListener"
-        ));
-
-        for (String name : beanNames) {
+    public void setJdaListeners(JDA jda) {
+        for (String name : listeners) {
             jda.addEventListener(context.getBean(name));
         }
         log.info("JDA 리스너 추가 완료");
-        return jda;
     }
 
     @Bean

@@ -73,7 +73,7 @@ public class PlayerManager {
             @Override
             public void trackLoaded(AudioTrack track) {
                 musicManager.scheduler.queue(track);
-                channel.sendMessage("음악이 추가되었습니다.").queue();
+                channel.sendMessage(track.getInfo().title + " 추가되었습니다.").queue();
             }
 
             @Override

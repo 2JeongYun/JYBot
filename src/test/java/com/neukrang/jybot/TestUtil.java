@@ -3,12 +3,10 @@ package com.neukrang.jybot;
 import com.neukrang.jybot.command.constraint.IConstraint;
 import com.neukrang.jybot.command.skeleton.Category;
 import com.neukrang.jybot.command.skeleton.ICommand;
-import lombok.Builder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.requests.restaction.MessageAction;
-import org.mockito.InjectMocks;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,5 +59,9 @@ public class TestUtil {
         given(textChannel.sendMessage(anyString())).willReturn(messageAction);
 
         return event;
+    }
+
+    public static String commandBeanNameOf(String commandName) {
+        return commandName + "Command";
     }
 }

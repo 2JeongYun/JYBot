@@ -4,11 +4,17 @@ import com.neukrang.jybot.command.constraint.IConstraint;
 import com.neukrang.jybot.command.skeleton.Category;
 import com.neukrang.jybot.command.skeleton.ICommand;
 import lombok.Builder;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.requests.restaction.MessageAction;
+import org.mockito.InjectMocks;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -41,5 +47,19 @@ public class TestUtil {
         given(constraint.getErrorMessage()).willReturn(errorMessage);
 
         return constraint;
+    }
+
+    public static GuildMessageReceivedEvent makeMockMsgEvent(String message) {
+        GuildMessageReceivedEvent event = mock(GuildMessageReceivedEvent.class);
+        TextChannel textChannel = mock(TextChannel.class);
+        MessageAction messageAction = mock(MessageAction.class);
+        Message messageObj = mock(Message.class);
+
+        given(event.getMessage()).willReturn(messageObj);
+        given(messageObj.getContentRaw()).willReturn(message);
+        given(event.getChannel()).willReturn(textChannel);
+        given(textChannel.sendMessage(anyString())).willReturn(messageAction);
+
+        return event;
     }
 }

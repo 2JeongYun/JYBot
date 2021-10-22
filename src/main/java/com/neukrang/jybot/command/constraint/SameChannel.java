@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SameChannel implements Constraint {
+public class SameChannel implements IConstraint {
 
     @Override
     public boolean isValid(GuildMessageReceivedEvent event) {

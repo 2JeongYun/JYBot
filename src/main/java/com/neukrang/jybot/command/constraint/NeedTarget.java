@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class NeedTarget implements Constraint {
+public class NeedTarget implements IConstraint {
 
     @Override
     public boolean isValid(GuildMessageReceivedEvent event) {

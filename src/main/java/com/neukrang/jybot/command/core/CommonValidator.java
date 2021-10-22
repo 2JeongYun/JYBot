@@ -1,6 +1,6 @@
 package com.neukrang.jybot.command.core;
 
-import com.neukrang.jybot.command.constraint.Constraint;
+import com.neukrang.jybot.command.constraint.IConstraint;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -14,11 +14,11 @@ import java.util.Map;
 @Component
 public class CommonValidator {
 
-    private final Map<String, Constraint> constraintMap;
+    private final Map<String, IConstraint> constraintMap;
 
     public boolean isValid(List<String> constraintList, GuildMessageReceivedEvent event) {
         for (String constraintName : constraintList) {
-            Constraint constraint = constraintMap.get(constraintName);
+            IConstraint constraint = constraintMap.get(constraintName);
             if (constraint == null) {
                 log.error("constraint: %s를 찾을 수 없습니다.", constraintName);
             }

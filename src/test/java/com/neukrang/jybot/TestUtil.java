@@ -5,6 +5,7 @@ import com.neukrang.jybot.command.skeleton.Category;
 import com.neukrang.jybot.command.skeleton.ICommand;
 import lombok.Builder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -13,8 +14,7 @@ import static org.mockito.Mockito.mock;
 
 public class TestUtil {
 
-
-    public ICommand makeMockCommand(String name,
+    public static ICommand makeMockCommand(String name,
                                     Category category,
                                     String helpMessage,
                                     List<String> constraintList) {
@@ -27,7 +27,15 @@ public class TestUtil {
         return command;
     }
 
-    public IConstraint makeMockConstraint(boolean isValid, String errorMessage) {
+    public static ICommand makeMockCommand(String name) {
+        return makeMockCommand(name, Category.TEST, name + "helpMessage", new ArrayList<>());
+    }
+
+    public static ICommand makeMockCommand(String name, List<String> constraintList) {
+        return makeMockCommand(name, Category.TEST, name + "helpMessage", constraintList);
+    }
+
+    public static IConstraint makeMockConstraint(boolean isValid, String errorMessage) {
         IConstraint constraint = mock(IConstraint.class);
         given(constraint.isValid(any())).willReturn(isValid);
         given(constraint.getErrorMessage()).willReturn(errorMessage);

@@ -8,6 +8,9 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.youtube.YouTube;
 import com.neukrang.jybot.crawler.YouTubeCrawler;
+import com.neukrang.jybot.listener.CommandListener;
+import com.neukrang.jybot.listener.DebugListener;
+import com.neukrang.jybot.listener.ReadyListener;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.JDA;
@@ -32,11 +35,11 @@ import java.util.List;
 @PropertySource("classpath:/application-private.yml")
 public class BotConfig implements ApplicationListener<ContextClosedEvent> {
 
-    private final List<String> listeners = new ArrayList<>(
+    private final List<Class> listeners = new ArrayList<>(
             Arrays.asList(
-                    "commandListener",
-                    "readyListener",
-                    "debugListener"
+                    CommandListener.class,
+                    DebugListener.class,
+                    ReadyListener.class
             )
     );
 
@@ -59,8 +62,8 @@ public class BotConfig implements ApplicationListener<ContextClosedEvent> {
     }
 
     public void setJdaListeners(JDA jda) {
-        for (String name : listeners) {
-            jda.addEventListener(context.getBean(name));
+        for (Class clazz : listeners) {
+            jda.addEventListener(context.getBean(clazz));
         }
         log.info("JDA 리스너 추가 완료");
     }

@@ -6,22 +6,14 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SameChannel implements IConstraint {
+public class UserInChannel implements IConstraint {
 
     @Override
     public boolean isValid(GuildMessageReceivedEvent event) {
         Guild guild = event.getGuild();
         GuildVoiceState memberState = guild.getMember(event.getAuthor()).getVoiceState();
-        GuildVoiceState botState = guild.getSelfMember().getVoiceState();
 
-        if (!memberState.inVoiceChannel() ||
-                !botState.inVoiceChannel()) {
-
-            return false;
-        }
-        if (memberState.getChannel().getIdLong() !=
-                botState.getChannel().getIdLong()) {
-
+        if (!memberState.inVoiceChannel()) {
             return false;
         }
 
@@ -30,6 +22,6 @@ public class SameChannel implements IConstraint {
 
     @Override
     public String getErrorMessage() {
-        return "봇과 같은 음성채널에서 사용해주세요.";
+        return "음성채널에 입장한 뒤 사용해주세요.";
     }
 }

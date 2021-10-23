@@ -1,5 +1,6 @@
 package com.neukrang.jybot.command.music;
 
+import com.neukrang.jybot.command.constraint.NoTarget;
 import com.neukrang.jybot.command.skeleton.Category;
 import com.neukrang.jybot.command.skeleton.Command;
 import com.neukrang.jybot.musicplayer.PlayerManager;
@@ -25,7 +26,7 @@ public class QueueCommand extends Command {
 
         helpMessage = "!queue\n" + "다음 곡 목록을 보여줍니다.";
         constraintList = new ArrayList<>(Arrays.asList(
-                "noTarget"
+                NoTarget.class
         ));
     }
 

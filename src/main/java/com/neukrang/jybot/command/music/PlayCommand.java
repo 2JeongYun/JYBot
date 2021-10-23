@@ -1,5 +1,7 @@
 package com.neukrang.jybot.command.music;
 
+import com.neukrang.jybot.command.constraint.NoTarget;
+import com.neukrang.jybot.command.constraint.SameChannel;
 import com.neukrang.jybot.command.skeleton.Category;
 import com.neukrang.jybot.command.skeleton.Command;
 import com.neukrang.jybot.musicplayer.PlayerManager;
@@ -25,8 +27,8 @@ public class PlayCommand extends Command {
 
         helpMessage = "!play\n" + "곡을 재생합니다.";
         constraintList = new ArrayList<>(Arrays.asList(
-                "noTarget",
-                "sameChannel"
+                NoTarget.class,
+                SameChannel.class
         ));
     }
 

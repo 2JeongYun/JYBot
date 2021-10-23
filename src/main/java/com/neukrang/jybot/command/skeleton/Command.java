@@ -12,7 +12,7 @@ public abstract class Command implements ICommand {
     protected String commandName = "";
     protected Category category = Category.NONE;
     protected String helpMessage = "";
-    protected List<String> constraintList = new ArrayList<>();
+    protected List<Class> constraintList = new ArrayList<>();
 
     @Override
     public abstract void handle(GuildMessageReceivedEvent event);

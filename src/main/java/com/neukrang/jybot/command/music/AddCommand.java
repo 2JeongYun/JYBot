@@ -1,5 +1,7 @@
 package com.neukrang.jybot.command.music;
 
+import com.neukrang.jybot.command.constraint.NeedTarget;
+import com.neukrang.jybot.command.constraint.SameChannel;
 import com.neukrang.jybot.command.skeleton.Category;
 import com.neukrang.jybot.command.skeleton.Command;
 import com.neukrang.jybot.crawler.YouTubeCrawler;
@@ -29,8 +31,8 @@ public class AddCommand extends Command {
                 + "음악을 큐에 추가합니다.";
 
         constraintList = new ArrayList<>(Arrays.asList(
-                "needTarget",
-                "sameChannel"
+                NeedTarget.class,
+                SameChannel.class
         ));
     }
 

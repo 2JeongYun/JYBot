@@ -1,5 +1,6 @@
 package com.neukrang.jybot.command.bot;
 
+import com.neukrang.jybot.command.constraint.NotManyTarget;
 import com.neukrang.jybot.command.core.CommandUtil;
 import com.neukrang.jybot.command.skeleton.Category;
 import com.neukrang.jybot.command.skeleton.Command;
@@ -28,7 +29,7 @@ public class HelpCommand extends Command {
 
         helpMessage = makeHelpMessage();
         constraintList = new ArrayList<>(Arrays.asList(
-                "notManyTarget"
+                NotManyTarget.class
         ));
     }
 

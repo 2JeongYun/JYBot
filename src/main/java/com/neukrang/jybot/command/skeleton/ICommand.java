@@ -7,7 +7,7 @@ import java.util.List;
 public interface ICommand {
 
     void handle(GuildMessageReceivedEvent event);
-    List<String> getConstraintList();
+    List<Class> getConstraintList();
     String getHelpMessage();
     String getCommandName();
     Category getCategory();

@@ -1,22 +1,17 @@
 package com.neukrang.jybot.command.core;
 
-import com.neukrang.jybot.TestUtil;
-import com.neukrang.jybot.command.constraint.IConstraint;
 import com.neukrang.jybot.command.skeleton.ICommand;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.neukrang.jybot.TestUtil.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.neukrang.jybot.TestUtil.makeMockCommand;
+import static com.neukrang.jybot.TestUtil.makeMockMsgEvent;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;

@@ -21,7 +21,7 @@ public class TestUtil {
     public static ICommand makeMockCommand(String name,
                                     Category category,
                                     String helpMessage,
-                                    List<String> constraintList) {
+                                    List<Class> constraintList) {
         ICommand command = mock(ICommand.class);
         given(command.getCommandName()).willReturn(name);
         given(command.getCategory()).willReturn(category);
@@ -35,7 +35,7 @@ public class TestUtil {
         return makeMockCommand(name, Category.TEST, name + "helpMessage", new ArrayList<>());
     }
 
-    public static ICommand makeMockCommand(String name, List<String> constraintList) {
+    public static ICommand makeMockCommand(String name, List<Class> constraintList) {
         return makeMockCommand(name, Category.TEST, name + "helpMessage", constraintList);
     }
 

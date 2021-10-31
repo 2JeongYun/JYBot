@@ -32,7 +32,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Configuration
-@PropertySource("classpath:/application-private.yml")
+@PropertySource("classpath:/application-private.properties")
 public class BotConfig implements ApplicationListener<ContextClosedEvent> {
 
     private final List<Class> listeners = new ArrayList<>(

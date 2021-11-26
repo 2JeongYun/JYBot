@@ -1,7 +1,10 @@
 # Created by .ignore support plugin (hsz.mobi)
 
+# 저장 파일
+*.ser
+
 # 보안 파일
-application-private.yml
+*private*
 
 # idea
 .idea

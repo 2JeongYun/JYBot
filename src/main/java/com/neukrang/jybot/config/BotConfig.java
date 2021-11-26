@@ -11,6 +11,7 @@ import com.neukrang.jybot.crawler.YouTubeCrawler;
 import com.neukrang.jybot.listener.CommandListener;
 import com.neukrang.jybot.listener.DebugListener;
 import com.neukrang.jybot.listener.ReadyListener;
+import com.neukrang.jybot.util.ApiCaller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.JDA;
@@ -90,6 +91,14 @@ public class BotConfig implements ApplicationListener<ContextClosedEvent> {
         final String API_KEY = env.getProperty("app.google.apikey");
 
         return new YouTubeCrawler(youTube(), API_KEY);
+    }
+
+    @Bean
+    public ApiCaller citadelApiCaller() {
+        final String API_KEY = env.getProperty("app.citadel.apikey");
+        final String BASE_URL = env.getProperty("app.citadel.url");
+
+        return new ApiCaller(API_KEY, BASE_URL);
     }
 
     @Override

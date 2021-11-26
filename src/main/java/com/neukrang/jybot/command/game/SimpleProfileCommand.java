@@ -9,6 +9,7 @@ import com.neukrang.jybot.util.ApiResponse;
 import com.neukrang.jybot.util.MethodType;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.springframework.stereotype.Component;
 
@@ -41,13 +42,20 @@ public class SimpleProfileCommand extends Command {
     public void handle(GuildMessageReceivedEvent event) {
         String content = event.getMessage().getContentRaw();
         String summonerName = content.substring(content.indexOf(' ') + 1);
-        String encodedName = URLEncoder.encode(summonerName, StandardCharsets.UTF_8);
-        String url = baseUrl + "/" + encodedName;
 
-        ApiResponse<SimpleProfile> response =
-                citadelApiCaller.call(url, MethodType.GET, new TypeReference<ApiResponse<SimpleProfile>>() {});
+        ApiResponse<SimpleProfile> response = getSimpleProfile(summonerName);
+
+        if (!response.isSuccess()) {
+            event.getChannel().sendMessage(summonerName + " 소환사를 찾을 수 없습니다.");
+            return;
+        }
+
         SimpleProfile simpleProfile = response.getData();
-        
+        MessageEmbed messageEmbed = makeEmbed(simpleProfile);
+        event.getChannel().sendMessage(messageEmbed).queue();
+    }
+
+    private MessageEmbed makeEmbed(SimpleProfile simpleProfile) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle(simpleProfile.getName());
         eb.addField("티어", simpleProfile.getTier(), true);
@@ -56,7 +64,15 @@ public class SimpleProfileCommand extends Command {
         eb.addField("베테랑", simpleProfile.getMostThree().toString(), true);
 
         eb.setFooter("Simple Profile");
+        return eb.build();
+    }
 
-        event.getChannel().sendMessage(eb.build()).queue();
+    private ApiResponse<SimpleProfile> getSimpleProfile(String name) {
+        String url = baseUrl + "/" + URLEncoder.encode(name, StandardCharsets.UTF_8);
+
+        ApiResponse<SimpleProfile> response
+                = citadelApiCaller.call(url, MethodType.GET, new TypeReference<ApiResponse<SimpleProfile>>() {});
+
+        return response;
     }
 }

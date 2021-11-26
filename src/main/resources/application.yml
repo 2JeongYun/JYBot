@@ -3,14 +3,19 @@ spring:
     active: local
 
 server:
-  host: http://localhost
   port: 10283
+
+---
+
+spring:
+  profiles: local
 
 app:
   citadel:
     url: http://localhost:8080
 
-logging.level:
-  com: debug
+logging:
+  level:
+    com.neukrang.jybot: debug
 
 ---

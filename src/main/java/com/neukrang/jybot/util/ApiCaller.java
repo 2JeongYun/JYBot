@@ -39,23 +39,27 @@ public class ApiCaller {
             }
 
             try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
-                String line = null;
-                StringBuffer sb = new StringBuffer();
-                while ((line = br.readLine()) != null) {
-                    sb.append(line);
-                }
-
-                String responseMsg = sb.toString();
-                log.debug(responseMsg);
-                return responseMsg;
-            } catch (FileNotFoundException e) {
-                log.error("ERROR: " + conn.getResponseCode());
-                return null;
+                return getMessageAsString(br);
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getErrorStream()))) {
+                return getMessageAsString(br);
+            } catch (Exception ex) {
+                return null;
+            }
         }
+    }
+
+    private String getMessageAsString(BufferedReader br) throws IOException {
+        String line = null;
+        StringBuffer sb = new StringBuffer();
+        while ((line = br.readLine()) != null) {
+            sb.append(line);
+        }
+
+        String responseMsg = sb.toString();
+        log.debug(responseMsg);
+        return responseMsg;
     }
 
     public <T> T call(String url, MethodType type, Map<String, String> headers, Class<T> returnType) {

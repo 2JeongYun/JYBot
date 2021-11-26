@@ -46,7 +46,7 @@ public class SimpleProfileCommand extends Command {
         ApiResponse<SimpleProfile> response = getSimpleProfile(summonerName);
 
         if (!response.isSuccess()) {
-            event.getChannel().sendMessage(summonerName + " 소환사를 찾을 수 없습니다.");
+            event.getChannel().sendMessage(summonerName + " 소환사를 찾을 수 없습니다.").queue();
             return;
         }
 

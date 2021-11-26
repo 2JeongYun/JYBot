@@ -21,8 +21,12 @@ public class JsonUtil {
         try {
             return om.readValue(json, typeReference);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
+            try {
+                return (T) om.readValue(json, new TypeReference<ApiResponse<String>>() {});
+            } catch (JsonProcessingException ex) {
+                ex.printStackTrace();
+                return null;
+            }
         }
     }
 

@@ -11,6 +11,7 @@ initialization performed by Boot
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<encoder>
+			<charset>UTF-8</charset>
 			<pattern>${FILE_LOG_PATTERN}</pattern>
 		</encoder>
 		<file>./logs/${LOG_FILE}.log</file>

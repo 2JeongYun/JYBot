@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
@@ -33,7 +34,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Configuration
-@PropertySource("classpath:/application-private.properties")
+@PropertySource("classpath:/config/application-private.properties")
 public class BotConfig implements ApplicationListener<ContextClosedEvent> {
 
     private final List<Class> listeners = new ArrayList<>(
@@ -46,6 +47,9 @@ public class BotConfig implements ApplicationListener<ContextClosedEvent> {
 
     private final ApplicationContext context;
     private final Environment env;
+
+    @Value("${app.citadel.url}")
+    private String citadelBaseUrl;
 
     @Bean
     public JDA jda() {
@@ -96,7 +100,7 @@ public class BotConfig implements ApplicationListener<ContextClosedEvent> {
     @Bean
     public ApiCaller citadelApiCaller() {
         final String API_KEY = env.getProperty("app.citadel.apikey");
-        final String BASE_URL = env.getProperty("app.citadel.url");
+        final String BASE_URL = citadelBaseUrl;
 
         return new ApiCaller(API_KEY, BASE_URL);
     }

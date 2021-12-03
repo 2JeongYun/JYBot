@@ -5,8 +5,9 @@ spring:
 server:
   port: 10283
 
+logging:
+  config: classpath:/config/logback-spring.xml
 ---
-
 spring:
   profiles: local
 
@@ -17,5 +18,4 @@ app:
 logging:
   level:
     com.neukrang.jybot: debug
-
 ---

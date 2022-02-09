@@ -1,5 +1,8 @@
 # Created by .ignore support plugin (hsz.mobi)
 
+# ?
+.DS_Store
+
 # 저장 파일
 *.ser
 
@@ -86,3 +89,5 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
+
+src/main/java/.DS_Store

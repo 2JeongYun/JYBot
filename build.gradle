@@ -42,7 +42,3 @@ dependencies {
 test {
     useJUnitPlatform()
 }
-
-bootJar {
-    destinationDirectory.set(file("C:/Users/2JY/Desktop"))
-}

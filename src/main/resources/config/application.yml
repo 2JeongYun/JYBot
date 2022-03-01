@@ -1,21 +1,40 @@
-spring:
-  profiles:
-    active: local
-
-server:
-  port: 10283
-
 logging:
   config: classpath:config/logback-spring.xml
+
 ---
+
 spring:
-  profiles: local
+  config:
+    activate:
+      on-profile: prod
 
 app:
   citadel:
-    url: http://localhost:8080
+    url: http://localhost:8081
 
 logging:
   level:
     com.neukrang.jybot: debug
+
+server:
+  port: 8080
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+app:
+  citadel:
+    url: http://localhost:8081
+
+logging:
+  level:
+    com.neukrang.jybot: debug
+
+server:
+  port: 8081
+
 ---

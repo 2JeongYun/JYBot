@@ -37,6 +37,8 @@ import java.util.List;
 @PropertySource("classpath:/config/application-private.properties")
 public class BotConfig implements ApplicationListener<ContextClosedEvent> {
 
+    private static final String PROD = "prod";
+    private static final String DEV = "dev";
     private final List<Class> listeners = new ArrayList<>(
             Arrays.asList(
                     CommandListener.class,
@@ -53,10 +55,11 @@ public class BotConfig implements ApplicationListener<ContextClosedEvent> {
 
     @Bean
     public JDA jda() {
-        final String TOKEN = env.getProperty("app.discord.token");
+        String token = getDiscordBotToken();
+
         JDA jda = null;
         try {
-            jda = JDABuilder.createDefault(TOKEN).build();
+            jda = JDABuilder.createDefault(token).build();
             setJdaListeners(jda);
         } catch (LoginException e) {
             log.error("디스코드 연결 실패");
@@ -64,6 +67,17 @@ public class BotConfig implements ApplicationListener<ContextClosedEvent> {
         }
 
         return jda;
+    }
+
+    private String getDiscordBotToken() {
+        String[] activeProfiles = env.getActiveProfiles();
+        String activeProfileName = Arrays.stream(activeProfiles)
+                .filter(profile -> profile.contains(PROD))
+                .findAny()
+                .orElse(DEV);
+        String token = env.getProperty("app.discord.token." + activeProfileName);
+        System.out.println(token);
+        return token;
     }
 
     public void setJdaListeners(JDA jda) {

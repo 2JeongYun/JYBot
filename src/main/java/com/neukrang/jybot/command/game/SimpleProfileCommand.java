@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -21,6 +22,7 @@ import java.util.Arrays;
 
 @RequiredArgsConstructor
 @Component
+@Profile("do-not-use")
 public class SimpleProfileCommand extends Command {
 
     private final ApiCaller citadelApiCaller;

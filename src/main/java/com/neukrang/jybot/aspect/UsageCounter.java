@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -18,6 +19,7 @@ import java.util.Map;
 @Slf4j
 @Aspect
 @Component
+@Profile("do-not-use")
 public class UsageCounter {
 
     private Map<String, Long> counter;

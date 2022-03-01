@@ -1,28 +1,35 @@
 package com.neukrang.jybot.command.core;
 
 import com.neukrang.jybot.command.skeleton.ICommand;
-import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 @Component
 public class CommandCenter {
 
-    private final Map<String, ICommand> commandMap;
     private final CommonValidator validator;
+    private Map<String, ICommand> commandMap;
+
+    public CommandCenter(CommonValidator validator, List<ICommand> commandList) {
+        this.validator = validator;
+        loadCommandMap(commandList);
+    }
+
+    private void loadCommandMap(List<ICommand> commandList) {
+        commandMap = new HashMap<>();
+        commandList.stream()
+                .forEach(command -> commandMap.put(command.getCommandName(), command));
+    }
 
     public void handle(GuildMessageReceivedEvent event) {
         String commandName = extractCommandName(event);
-        String commandBeanName = commandName + "Command";
 
-        Optional<ICommand> command = Optional.ofNullable(commandMap.get(commandBeanName));
-        if (command.isEmpty())
-            command = findByCommandName(commandMap, commandName);
-
+        Optional<ICommand> command = Optional.ofNullable(commandMap.get(commandName));
         if (command.isEmpty()) {
             event.getChannel()
                     .sendMessage("해당되는 명령어가 없습니다. '!help' 를 참조하세요.")
@@ -39,11 +46,5 @@ public class CommandCenter {
     private String extractCommandName(GuildMessageReceivedEvent event) {
         String content = event.getMessage().getContentRaw();
         return content.split(" ")[0].replaceFirst("!", "");
-    }
-
-    private Optional<ICommand> findByCommandName(Map<String, ICommand> map, String commandName) {
-        return map.values().stream()
-                .filter(iCommand -> iCommand.getCommandName().equals(commandName))
-                .findFirst();
     }
 }

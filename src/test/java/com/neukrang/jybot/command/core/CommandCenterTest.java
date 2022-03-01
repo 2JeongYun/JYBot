@@ -7,8 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.neukrang.jybot.TestUtil.makeMockCommand;
 import static com.neukrang.jybot.TestUtil.makeMockMsgEvent;
@@ -24,19 +24,19 @@ class CommandCenterTest {
     String commandName1 = "command1";
     String commandName2 = "command2";
 
-    private Map<String, ICommand> commandMap;
+    private List<ICommand> commandList;
     private CommonValidator mockCommonValidator;
 
     @BeforeEach
     public void setUp() {
-        commandMap = new HashMap<>();
-        commandMap.put(commandName1 + "Command", makeMockCommand(commandName1));
-        commandMap.put(commandName2 + "Command", makeMockCommand(commandName2));
+        commandList = new ArrayList<>();
+        commandList.add(makeMockCommand(commandName1));
+        commandList.add(makeMockCommand(commandName2));
 
         mockCommonValidator = mock(CommonValidator.class);
         given(mockCommonValidator.isValid(anyList(), any(GuildMessageReceivedEvent.class))).willReturn(true);
 
-        commandCenter = new CommandCenter(commandMap, mockCommonValidator);
+        commandCenter = new CommandCenter(mockCommonValidator, commandList);
     }
 
     @DisplayName("커맨드 매핑")
@@ -44,7 +44,10 @@ class CommandCenterTest {
     void handle() {
         //given
         GuildMessageReceivedEvent event = makeMockMsgEvent("!" + commandName1);
-        ICommand command = commandMap.get(commandName1 + "Command");
+        ICommand command = commandList.stream()
+                .filter(c -> event.getMessage().getContentRaw().contains(c.getCommandName()))
+                .findAny()
+                .get();
 
         //when
         commandCenter.handle(event);

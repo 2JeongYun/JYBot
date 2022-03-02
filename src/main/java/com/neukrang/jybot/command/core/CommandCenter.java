@@ -45,6 +45,13 @@ public class CommandCenter {
 
     private String extractCommandName(GuildMessageReceivedEvent event) {
         String content = event.getMessage().getContentRaw();
-        return content.split(" ")[0].replaceFirst("!", "");
+        String firstToken = getFirstToken(content);
+        firstToken = firstToken.replaceFirst("\\?", "");
+        firstToken = firstToken.replaceFirst("!", "");
+        return firstToken;
+    }
+
+    private String getFirstToken(String content) {
+        return content.split(" ")[0];
     }
 }

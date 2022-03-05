@@ -76,7 +76,6 @@ public class BotConfig implements ApplicationListener<ContextClosedEvent> {
                 .findAny()
                 .orElse(DEV);
         String token = env.getProperty("app.discord.token." + activeProfileName);
-        System.out.println(token);
         return token;
     }
 

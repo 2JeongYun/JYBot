@@ -4,9 +4,11 @@ import lombok.Builder;
 import lombok.Getter;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -42,7 +44,7 @@ public class StudyTimer {
         TimerTask studyNotifyTask = new TimerTask() {
             @Override
             public void run() {
-                textChannel.sendMessage("공부 시간입니다. 다음 휴식 시각은 " + getNextTime(studyMinute) + "입니다.").queue();
+                notifyStudyTime();
                 status = StudyStatus.STUDY;
 
                 setRestTimer();
@@ -54,21 +56,29 @@ public class StudyTimer {
         return studyTimer;
     }
 
+    private void notifyStudyTime() {
+        textChannel.sendMessage(createMentionInStudyRoom()
+                + "\n공부 시간입니다. 다음 휴식 시각은 " + getNextTime(studyMinute) + "입니다.").queue();
+    }
+
     private void setRestTimer() {
         restTimer = new Timer();
         TimerTask restNotifyTask = new TimerTask() {
             @Override
             public void run() {
-                textChannel.sendMessage("휴식 시간입니다. 다음 공부 시각은 " + getNextTime(restMinute) + "입니다.").queue();
+                notifyRestTime();
                 status = StudyStatus.REST;
             }
         };
         restTimer.schedule(restNotifyTask, convertToMilliSecond(studyMinute));
     }
 
+    private void notifyRestTime() {
+        textChannel.sendMessage(createMentionInStudyRoom()
+                + "\n휴식 시간입니다. 다음 공부 시각은 " + getNextTime(restMinute) + "입니다.").queue();
+    }
+
     private String getNextTime(int minute) {
-        System.out.println("NOW: " + LocalDateTime.now());
-        System.out.println("Args min: " + minute);
         return getFormattedTime(LocalDateTime.now().plusMinutes(minute));
     }
 
@@ -78,5 +88,17 @@ public class StudyTimer {
 
     private long convertToMilliSecond(int minute) {
         return (long) minute * 60000;
+    }
+
+    private String createMentionInStudyRoom() {
+        List<VoiceChannel> studyRoom = guild.getVoiceChannelsByName("StudyRoom", true);
+        StringBuffer mentionMessage = new StringBuffer();
+        studyRoom.stream()
+                .forEach(room -> {
+                    room.getMembers().stream()
+                            .filter(member -> !member.getUser().isBot())
+                            .forEach(member -> mentionMessage.append(member.getAsMention()));
+                });
+        return mentionMessage.toString();
     }
 }

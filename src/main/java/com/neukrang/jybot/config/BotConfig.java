@@ -21,9 +21,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.event.ContextClosedEvent;
-import org.springframework.core.env.Environment;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
@@ -34,11 +32,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Configuration
-@PropertySource("classpath:/config/application-private.properties")
 public class BotConfig implements ApplicationListener<ContextClosedEvent> {
 
-    private static final String PROD = "prod";
-    private static final String DEV = "dev";
     private final List<Class> listeners = new ArrayList<>(
             Arrays.asList(
                     CommandListener.class,
@@ -48,18 +43,24 @@ public class BotConfig implements ApplicationListener<ContextClosedEvent> {
     );
 
     private final ApplicationContext context;
-    private final Environment env;
 
     @Value("${app.citadel.url}")
     private String citadelBaseUrl;
 
+    @Value("${app.discord.token}")
+    private String discordToken;
+
+    @Value("${app.google.apikey}")
+    private String googleApiKey;
+
+    @Value("${app.citadel.apikey}")
+    private String citadelApiKey;
+
     @Bean
     public JDA jda() {
-        String token = getDiscordBotToken();
-
         JDA jda = null;
         try {
-            jda = JDABuilder.createDefault(token).build();
+            jda = JDABuilder.createDefault(discordToken).build();
             setJdaListeners(jda);
         } catch (LoginException e) {
             log.error("디스코드 연결 실패");
@@ -67,16 +68,6 @@ public class BotConfig implements ApplicationListener<ContextClosedEvent> {
         }
 
         return jda;
-    }
-
-    private String getDiscordBotToken() {
-        String[] activeProfiles = env.getActiveProfiles();
-        String activeProfileName = Arrays.stream(activeProfiles)
-                .filter(profile -> profile.contains(PROD))
-                .findAny()
-                .orElse(DEV);
-        String token = env.getProperty("app.discord.token." + activeProfileName);
-        return token;
     }
 
     public void setJdaListeners(JDA jda) {
@@ -105,17 +96,12 @@ public class BotConfig implements ApplicationListener<ContextClosedEvent> {
 
     @Bean
     public YouTubeCrawler youTubeCrawler() {
-        final String API_KEY = env.getProperty("app.google.apikey");
-
-        return new YouTubeCrawler(youTube(), API_KEY);
+        return new YouTubeCrawler(youTube(), googleApiKey);
     }
 
     @Bean
     public ApiCaller citadelApiCaller() {
-        final String API_KEY = env.getProperty("app.citadel.apikey");
-        final String BASE_URL = citadelBaseUrl;
-
-        return new ApiCaller(API_KEY, BASE_URL);
+        return new ApiCaller(citadelApiKey, citadelBaseUrl);
     }
 
     @Override

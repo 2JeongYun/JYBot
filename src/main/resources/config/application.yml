@@ -1,6 +1,14 @@
 logging:
   config: classpath:config/logback-spring.xml
 
+app:
+  google:
+    apikey: ENC(0Chd1VQ6Cj3bZRUOFA8bhrTXOKsKDmyzRdlCgdQQwhtL1RQ1OUYYt0hFEflSVZOO)
+  discord:
+    token: ENC(XiR7k2lUHae3OuZ1S1SX0KgZ7JfmI67ndN6oZ+nHy7J1EcR6O4JplxYHxnSl+W8KTwQCQH9nI0ZDq3eaOfoGZmQbd/ViyjRH)
+  citadel:
+    apikey: ENC(Sk+2HpBSpMXd0XKkmPMHH/7EW9KgIKguCyOMrs+hsNTKyeBlqtD3hQHata2Z3Jxg)
+
 ---
 
 spring:
@@ -11,10 +19,12 @@ spring:
 app:
   citadel:
     url: http://localhost:8081
+  discord:
+    toekn: ENC(z8goFz4KXUNfVUCXx4zO81qJkMgs1XDWVFoJAholtaGo77TL8KDiJDwFD2kBQKPESlx8Y0YZU38+iq4L/cPCSHvyx5ALyi/q)
 
 logging:
   level:
-    com.neukrang.jybot: debug
+    com.neukrang.jybot: info
 
 server:
   port: 8080

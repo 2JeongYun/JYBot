@@ -13,6 +13,7 @@ plugins {
 
 group 'com.github.neukrang'
 version '1.0-SNAPSHOT'
+sourceCompatibility = 17
 
 repositories {
     mavenCentral()
@@ -31,6 +32,7 @@ dependencies {
     implementation("org.jsoup:jsoup:1.13.1")
     implementation("com.google.api-client:google-api-client:1.31.5")
     implementation("com.google.apis:google-api-services-youtube:v3-rev222-1.25.0")
+    implementation("com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.projectlombok:lombok")

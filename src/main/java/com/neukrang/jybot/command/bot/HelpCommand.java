@@ -4,14 +4,12 @@ import com.neukrang.jybot.command.constraint.NotManyTarget;
 import com.neukrang.jybot.command.core.CommandUtil;
 import com.neukrang.jybot.command.skeleton.Category;
 import com.neukrang.jybot.command.skeleton.Command;
+import com.neukrang.jybot.command.skeleton.CommandInfo;
 import com.neukrang.jybot.command.skeleton.ICommand;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -21,22 +19,20 @@ public class HelpCommand extends Command {
 
     private final Map<String, ICommand> commandMap;
 
-    @PostConstruct
     @Override
-    protected void init() {
-        commandName = "help";
-        category = Category.BOT;
-
-        helpMessage = makeHelpMessage();
-        constraintList = new ArrayList<>(Arrays.asList(
-                NotManyTarget.class
-        ));
+    protected CommandInfo createCommandInfo() {
+        return CommandInfo.builder()
+                .commandName("help")
+                .category(Category.BOT)
+                .helpMessage(makeHelpMessage())
+                .constraintList(List.of(NotManyTarget.class))
+                .build();
     }
 
     @Override
     public void handle(GuildMessageReceivedEvent event) {
         List<String> targets = CommandUtil.parse(event);
-        String retMsg = null;
+        String retMsg;
 
         if (targets.size() == 0)
             retMsg = this.getHelpMessage();

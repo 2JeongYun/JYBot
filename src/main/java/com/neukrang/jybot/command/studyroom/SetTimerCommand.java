@@ -4,14 +4,12 @@ import com.neukrang.jybot.command.constraint.NeedTarget;
 import com.neukrang.jybot.command.core.CommandUtil;
 import com.neukrang.jybot.command.skeleton.Category;
 import com.neukrang.jybot.command.skeleton.Command;
+import com.neukrang.jybot.command.skeleton.CommandInfo;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -20,18 +18,16 @@ public class SetTimerCommand extends Command {
 
     private final StudyTimerRepository studyTimerRepository;
 
-    @PostConstruct
     @Override
-    protected void init() {
-        commandName = "setStudyTimer";
-        category = Category.BOT;
-
-        helpMessage = "!setStudyTimer [공부 시간] [쉬는 시간]\n" +
-                "공부 시간(분 단위)을 설정합니다.\n" +
-                "둘 중 하나라도 0으로 설정하면 타이머가 종료됩니다.";
-        constraintList = new ArrayList<>(Arrays.asList(
-                NeedTarget.class
-        ));
+    protected CommandInfo createCommandInfo() {
+        return CommandInfo.builder()
+                .commandName("setStudyTimer")
+                .category(Category.BOT)
+                .helpMessage("!setStudyTimer [공부 시간] [쉬는 시간]\n" +
+                        "공부 시간(분 단위)을 설정합니다.\n" +
+                        "둘 중 하나라도 0으로 설정하면 타이머가 종료됩니다.")
+                .constraintList(List.of(NeedTarget.class))
+                .build();
     }
 
     @Override

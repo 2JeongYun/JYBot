@@ -4,27 +4,23 @@ import com.neukrang.jybot.command.constraint.BotInChannel;
 import com.neukrang.jybot.command.constraint.NoTarget;
 import com.neukrang.jybot.command.skeleton.Category;
 import com.neukrang.jybot.command.skeleton.Command;
+import com.neukrang.jybot.command.skeleton.CommandInfo;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class OutCommand extends Command {
 
-    @PostConstruct
     @Override
-    protected void init() {
-        commandName = "out";
-        category = Category.BOT;
-
-        helpMessage = "!out\n" + "봇을 음성채널에서 퇴장시킵니다.";
-        constraintList = new ArrayList<>(Arrays.asList(
-                NoTarget.class,
-                BotInChannel.class
-        ));
+    protected CommandInfo createCommandInfo() {
+        return CommandInfo.builder()
+                .commandName("out")
+                .category(Category.BOT)
+                .helpMessage("!out\n" + "봇을 음성채널에서 퇴장시킵니다.")
+                .constraintList(List.of(NoTarget.class, BotInChannel.class))
+                .build();
     }
 
     @Override

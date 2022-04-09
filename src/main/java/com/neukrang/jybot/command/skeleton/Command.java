@@ -1,21 +1,41 @@
 package com.neukrang.jybot.command.skeleton;
 
-import lombok.Getter;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
-import java.util.ArrayList;
+import javax.annotation.PostConstruct;
 import java.util.List;
 
-@Getter
 public abstract class Command implements ICommand {
 
-    protected String commandName = "";
-    protected Category category = Category.NONE;
-    protected String helpMessage = "";
-    protected List<Class> constraintList = new ArrayList<>();
+    protected CommandInfo commandInfo;
+
+    @PostConstruct
+    protected void setCommandInfo() {
+        this.commandInfo = createCommandInfo();
+    }
+
+    protected abstract CommandInfo createCommandInfo();
 
     @Override
     public abstract void handle(GuildMessageReceivedEvent event);
 
-    protected abstract void init();
+    @Override
+    public List<Class> getConstraintList() {
+        return commandInfo.getConstraintList();
+    }
+
+    @Override
+    public String getHelpMessage() {
+        return commandInfo.getHelpMessage();
+    }
+
+    @Override
+    public String getCommandName() {
+        return commandInfo.getCommandName();
+    }
+
+    @Override
+    public Category getCategory() {
+        return commandInfo.getCategory();
+    }
 }

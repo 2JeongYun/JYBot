@@ -4,15 +4,14 @@ import com.neukrang.jybot.command.constraint.NeedTarget;
 import com.neukrang.jybot.command.constraint.SameChannel;
 import com.neukrang.jybot.command.skeleton.Category;
 import com.neukrang.jybot.command.skeleton.Command;
+import com.neukrang.jybot.command.skeleton.CommandInfo;
 import com.neukrang.jybot.crawler.YouTubeCrawler;
 import com.neukrang.jybot.musicplayer.PlayerManager;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Component
@@ -21,19 +20,15 @@ public class AddCommand extends Command {
     private final PlayerManager playerManager;
     private final YouTubeCrawler youtubeCrawler;
 
-    @PostConstruct
     @Override
-    public void init() {
-        commandName = "add";
-        category = Category.MUSIC;
-
-        helpMessage = "!add [제목]\n"
-                + "음악을 큐에 추가합니다.";
-
-        constraintList = new ArrayList<>(Arrays.asList(
-                NeedTarget.class,
-                SameChannel.class
-        ));
+    protected CommandInfo createCommandInfo() {
+        return CommandInfo.builder()
+                .commandName("add")
+                .category(Category.MUSIC)
+                .helpMessage("!add [제목]\n"
+                        + "음악을 큐에 추가합니다.")
+                .constraintList(List.of(NeedTarget.class, SameChannel.class))
+                .build();
     }
 
     @Override
